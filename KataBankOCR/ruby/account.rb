@@ -6,7 +6,7 @@ module KataBank
     def initialize(acc_number)
       @acc_number = acc_number
       @ill = @acc_number.count("?") > 0
-      @err = !checksum_valid
+      @err = !@ill && !checksum_valid
     end
 
     def checksum_valid
@@ -26,7 +26,7 @@ module KataBank
     end
 
     def to_s
-      "#{@acc_number} #{'ERR' unless !@err} #{'ILL' unless !@ill}"
+      "#{@acc_number} #{'ERR' unless !@err}#{'ILL' unless !@ill}"
     end
 
   end
