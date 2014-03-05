@@ -20,7 +20,7 @@ module KataBank
       "6" => ["8"],
       "7" => ["1"],
       "8" => ["0"],
-      "9" => ["3", "5", "8"]
+      "9" => ["3", "5", "8"],
     }
 
     def Digit.convert(flatten_digit)
@@ -40,7 +40,8 @@ module KataBank
     end
 
     def Digit.fixup(digit)
-      ERR_TRANSLATIONS[digit]
+      fixed_digits = ERR_TRANSLATIONS[digit]
+      fixed_digits ? fixed_digits : [digit]
     end
 
   end

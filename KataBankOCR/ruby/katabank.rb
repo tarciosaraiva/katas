@@ -17,10 +17,6 @@ module KataBank
       @accounts = []
       split_lines
       parse_digits
-
-      @accounts.each { |acc|
-        puts acc
-      }
     end
 
     def split_lines (line_num = 0)
@@ -41,8 +37,7 @@ module KataBank
           account_number.concat parse_digits(row, end_range + 1..end_range + 3)
 
           if (account_number.length == 9)
-            account = Account.new(account_number)
-            @accounts.push account
+            @accounts.push Account.new(account_number)
             parse_digits(row + 4)
           end
         end
