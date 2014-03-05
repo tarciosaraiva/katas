@@ -23,7 +23,7 @@ module KataBank
       "9" => ["3", "5", "8"],
     }
 
-    def Digit.attempt_identification(flatten_digit)
+    def Digit.attempt_identification(flatten_digit, position = 0, add = true)
       case flatten_digit
       when ZERO  then "0"
       when ONE   then "1"
@@ -35,7 +35,16 @@ module KataBank
       when SEVEN then "7"
       when EIGHT then "8"
       when NINE  then "9"
-      else "?"
+      else {
+        curr_sym = flatten_digit[position]
+        if (add)
+          flatten_digit[position] = (curr_sym == "|") ? "_" : "|"
+        else
+          flatten_digit[position] = " "
+        end
+        position += 1
+        attempt_identification(flatten_digit, position, add)
+      }
       end
     end
 
