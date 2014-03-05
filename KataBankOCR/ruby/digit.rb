@@ -16,14 +16,14 @@ module KataBank
       "0" => ["8"],
       "1" => ["7"],
       "3" => ["9"],
-      "5" => ["9", "6"],
-      "6" => ["8"],
+      "5" => ["6", "9"],
+      "6" => ["5", "8"],
       "7" => ["1"],
-      "8" => ["0"],
+      "8" => ["0", "6", "9"],
       "9" => ["3", "5", "8"],
     }
 
-    def Digit.convert(flatten_digit)
+    def Digit.attempt_identification(flatten_digit)
       case flatten_digit
       when ZERO  then "0"
       when ONE   then "1"
@@ -39,7 +39,7 @@ module KataBank
       end
     end
 
-    def Digit.fixup(digit)
+    def Digit.attempt_translation(digit)
       fixed_digits = ERR_TRANSLATIONS[digit]
       fixed_digits ? fixed_digits : [digit]
     end
