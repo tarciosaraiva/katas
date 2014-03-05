@@ -1,3 +1,5 @@
+require 'digit'
+
 module KataBank
   class Account
 

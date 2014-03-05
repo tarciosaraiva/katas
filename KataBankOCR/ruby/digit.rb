@@ -12,6 +12,17 @@ module KataBank
     EIGHT = " _ |_||_|"
     NINE  = " _ |_| _|"
 
+    ERR_TRANSLATIONS = {
+      "0" => ["8"],
+      "1" => ["7"],
+      "3" => ["9"],
+      "5" => ["9", "6"],
+      "6" => ["8"],
+      "7" => ["1"],
+      "8" => ["0"],
+      "9" => ["3", "5", "8"]
+    }
+
     def Digit.convert(flatten_digit)
       case flatten_digit
       when ZERO  then "0"
@@ -26,6 +37,10 @@ module KataBank
       when NINE  then "9"
       else "?"
       end
+    end
+
+    def Digit.fixup(digit)
+      ERR_TRANSLATIONS[digit]
     end
 
   end

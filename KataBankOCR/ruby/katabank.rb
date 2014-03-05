@@ -41,7 +41,8 @@ module KataBank
           account_number.concat parse_digits(row, end_range + 1..end_range + 3)
 
           if (account_number.length == 9)
-            @accounts.push Account.new(account_number)
+            account = Account.new(account_number)
+            @accounts.push account
             parse_digits(row + 4)
           end
         end
