@@ -29,11 +29,10 @@ module Katabank
       if (row < @raw_content.size)
         if (end_range < ENTRY_COLUMN_CONSTRAINT)
           flatten_digit = extract_digit(row, col_range)
-
           account_number = Digit.new(flatten_digit).to_s
           account_number.concat parse_digits(row, end_range + 1..end_range + 3)
 
-          if (account_number.length == 9)
+          if (account_number.length == Account::ACC_NUM_LEN)
             @accounts.push Account.new(account_number)
             parse_digits(row + 4)
           end
