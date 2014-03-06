@@ -1,6 +1,4 @@
-require 'digit'
-
-module KataBank
+module Katabank
   class Account
 
     ACC_NUM_LEN = 9

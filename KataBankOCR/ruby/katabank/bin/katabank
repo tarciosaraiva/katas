@@ -1,0 +1,5 @@
+#!/usr/bin/ruby
+
+require "katabank"
+
+Katabank::FileParser.new "./data/data.txt"

@@ -1,4 +1,4 @@
-module KataBank
+module Katabank
   class Digit
 
     ZERO  = " _ | ||_|"
@@ -35,16 +35,17 @@ module KataBank
       when SEVEN then "7"
       when EIGHT then "8"
       when NINE  then "9"
-      else {
-        curr_sym = flatten_digit[position]
-        if (add)
-          flatten_digit[position] = (curr_sym == "|") ? "_" : "|"
-        else
-          flatten_digit[position] = " "
-        end
-        position += 1
-        attempt_identification(flatten_digit, position, add)
-      }
+      # else {
+      #   curr_sym = flatten_digit[position]
+      #   if (add)
+      #     flatten_digit[position] = (curr_sym == "|") ? "_" : "|"
+      #   else
+      #     flatten_digit[position] = " "
+      #   end
+      #   position += 1
+      #   attempt_identification(flatten_digit, position, add)
+      # }
+      else "?"
       end
     end
 

@@ -1,18 +1,15 @@
-#!/usr/bin/ruby
+require "katabank/version"
+require "katabank/account"
+require "katabank/digit"
 
-$LOAD_PATH << '.'
-
-require 'digit'
-require 'account'
-
-module KataBank
+module Katabank
 
   BLOCK_CONSTRAINT = 3
   ENTRY_COLUMN_CONSTRAINT = 28
 
   class FileParser
 
-    def read (file)
+    def initialize (file)
       @raw_content = IO.readlines(file)
       @accounts = []
       split_lines
@@ -57,6 +54,3 @@ module KataBank
   end
 
 end
-
-parser = KataBank::FileParser.new
-parser.read "data.txt"
