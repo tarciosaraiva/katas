@@ -1,6 +1,8 @@
 module Katabank
   class Digit
 
+    ILL_DIGIT = "?"
+
     ZERO  = " _ | ||_|"
     ONE   = "     |  |"
     TWO   = " _  _||_ "
@@ -23,7 +25,7 @@ module Katabank
       "9" => ["3", "5", "8"],
     }
 
-    def Digit.attempt_identification(flatten_digit, position = 0, add = true)
+    def Digit.attempt_identification(flatten_digit)
       case flatten_digit
       when ZERO  then "0"
       when ONE   then "1"
@@ -35,17 +37,20 @@ module Katabank
       when SEVEN then "7"
       when EIGHT then "8"
       when NINE  then "9"
-      # else {
-      #   curr_sym = flatten_digit[position]
-      #   if (add)
-      #     flatten_digit[position] = (curr_sym == "|") ? "_" : "|"
-      #   else
-      #     flatten_digit[position] = " "
-      #   end
-      #   position += 1
-      #   attempt_identification(flatten_digit, position, add)
-      # }
       else "?"
+      end
+    end
+
+    def Digit.attempt_identify_ill_digit(flatten_digit, position = 0)
+      curr_sym = flatten_digit[position]
+      flatten_digit[position] = (curr_sym == "|") ? "_" : "|"
+      result = Digit.attempt_identification(flatten_digit)
+      if (result == ILL_DIGIT && position < 9)
+        flatten_digit[position] = curr_sym
+        position += 1
+        Digit.attempt_identify_ill_digit(flatten_digit, position)
+      else
+        result
       end
     end
 

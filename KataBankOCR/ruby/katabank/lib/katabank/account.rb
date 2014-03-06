@@ -2,12 +2,11 @@ module Katabank
   class Account
 
     ACC_NUM_LEN = 9
-    ILL_ACC_NUM = "?"
 
     def initialize(acc_number)
       @account_number = acc_number
       @possibilities  = []
-      @ill            = acc_number.count(ILL_ACC_NUM) > 0
+      @ill            = acc_number.count(Digit::ILL_DIGIT) > 0
 
       if !@ill
         recheck_account_number(acc_number) unless checksum_valid(acc_number)
