@@ -12,8 +12,6 @@ module Katabank
         recheck_account_number(acc_number) unless checksum_valid(acc_number)
         @account_number = @possibilities[0] unless @possibilities.size != 1
       end
-
-      puts to_s
     end
 
     def checksum_valid(acc_number)
