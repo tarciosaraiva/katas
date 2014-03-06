@@ -30,8 +30,7 @@ module Katabank
         if (end_range < ENTRY_COLUMN_CONSTRAINT)
           flatten_digit = extract_digit(row, col_range)
 
-          account_number = Digit.attempt_identification(flatten_digit)
-          account_number = Digit.attempt_digit_fix(flatten_digit) unless account_number != Digit::ILL_DIGIT
+          account_number = Digit.new(flatten_digit).to_s
           account_number.concat parse_digits(row, end_range + 1..end_range + 3)
 
           if (account_number.length == 9)

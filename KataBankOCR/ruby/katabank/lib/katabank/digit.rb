@@ -25,7 +25,12 @@ module Katabank
       "9" => ["3", "5", "8"],
     }
 
-    def Digit.attempt_identification(flatten_digit)
+    def initialize(flatten_digit)
+      @digit = attempt_identification(flatten_digit)
+      @digit = attempt_identify_ill_digit(flatten_digit) unless @digit != ILL_DIGIT
+    end
+
+    def attempt_identification(flatten_digit)
       case flatten_digit
       when ZERO  then "0"
       when ONE   then "1"
@@ -41,14 +46,14 @@ module Katabank
       end
     end
 
-    def Digit.attempt_identify_ill_digit(flatten_digit, position = 0)
+    def attempt_identify_ill_digit(flatten_digit, position = 0)
       curr_sym = flatten_digit[position]
       flatten_digit[position] = (curr_sym == "|") ? "_" : "|"
-      result = Digit.attempt_identification(flatten_digit)
+      result = attempt_identification(flatten_digit)
       if (result == ILL_DIGIT && position < 9)
         flatten_digit[position] = curr_sym
         position += 1
-        Digit.attempt_identify_ill_digit(flatten_digit, position)
+        attempt_identify_ill_digit(flatten_digit, position)
       else
         result
       end
@@ -57,6 +62,10 @@ module Katabank
     def Digit.attempt_translation(digit)
       fixed_digits = ERR_TRANSLATIONS[digit]
       fixed_digits ? fixed_digits : [digit]
+    end
+
+    def to_s
+      @digit
     end
 
   end
