@@ -6,7 +6,7 @@ module Katabank
       @possibilities  = []
       @status         = CHECKSUM.validate(account_number)
 
-      if @status == 'OK' || @status == 'NOK'
+      if @status != 'OK'
         recheck_account_number(account_number)
         case @possibilities.size
         when 1
@@ -17,8 +17,6 @@ module Katabank
           @status = 'AMB'
         end
       end
-
-      puts self
     end
 
     def to_s
