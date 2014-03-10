@@ -1,12 +1,10 @@
 module Katabank
   class Account
 
-    ACC_NUM_LEN = 9
-
     def initialize(acc_number)
       @account_number = acc_number
       @possibilities  = []
-      @ill            = acc_number.count(Digit::ILL_DIGIT) > 0
+      @ill            = acc_number.count(ILL_DIGIT) > 0
 
       if !@ill
         recheck_account_number(acc_number) unless CHECKSUM.is_valid(acc_number)
@@ -15,6 +13,12 @@ module Katabank
 
       puts to_s
     end
+
+    def to_s
+      "#{@account_number} #{'AMB ' + @possibilities.to_s unless @possibilities.size < 2}#{'ILL' unless !@ill}"
+    end
+
+    private
 
     def recheck_account_number(acc_number, position = 0)
       digit_to_fix = acc_number[position]
@@ -28,10 +32,6 @@ module Katabank
       acc_number[position] = digit_to_fix
       position += 1
       recheck_account_number(acc_number, position) unless position >= ACC_NUM_LEN
-    end
-
-    def to_s
-      "#{@account_number} #{'AMB ' + @possibilities.to_s unless @possibilities.size < 2}#{'ILL' unless !@ill}"
     end
 
   end

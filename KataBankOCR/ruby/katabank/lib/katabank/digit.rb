@@ -1,7 +1,42 @@
 module Katabank
   class Digit
 
-    ILL_DIGIT = "?"
+    def initialize(flatten_digit)
+      @digit = attempt_identification(flatten_digit)
+      @digit = attempt_identify_ill_digit(flatten_digit) unless @digit != ILL_DIGIT
+    end
+
+    def Digit.attempt_translation(digit)
+      ERR_TRANSLATIONS[digit] || [digit]
+    end
+
+    def to_s
+      String.new(@digit)
+    end
+
+    private
+
+    def attempt_identification(flatten_digit)
+      MAPPINGS[flatten_digit] || ILL_DIGIT
+    end
+
+    def attempt_identify_ill_digit(flatten_digit, position = 0)
+      curr_sym = flatten_digit[position]
+      matches  = ["_", "|", " "]
+      result = ILL_DIGIT
+
+      while !matches.empty?
+        flatten_digit[position] = matches.pop
+        result = attempt_identification(flatten_digit) unless result != ILL_DIGIT
+      end
+
+      if (result == ILL_DIGIT && position < ACC_NUM_LEN)
+        flatten_digit[position] = curr_sym
+        attempt_identify_ill_digit(flatten_digit, position + 1)
+      else
+        result
+      end
+    end
 
     MAPPINGS = {
       " _ | ||_|" => "0",
@@ -26,41 +61,6 @@ module Katabank
       "8" => ["0", "6", "9"],
       "9" => ["3", "5", "8"],
     }
-
-    def initialize(flatten_digit)
-      @digit = attempt_identification(flatten_digit)
-      @digit = attempt_identify_ill_digit(flatten_digit) unless @digit != ILL_DIGIT
-    end
-
-    def attempt_identification(flatten_digit)
-      MAPPINGS[flatten_digit] || "?"
-    end
-
-    def attempt_identify_ill_digit(flatten_digit, position = 0)
-      curr_sym = flatten_digit[position]
-      matches  = ["_", "|", " "]
-      result = ILL_DIGIT
-
-      while !matches.empty?
-        flatten_digit[position] = matches.pop
-        result = attempt_identification(flatten_digit) unless result != ILL_DIGIT
-      end
-
-      if (result == ILL_DIGIT && position < Account::ACC_NUM_LEN)
-        flatten_digit[position] = curr_sym
-        attempt_identify_ill_digit(flatten_digit, position + 1)
-      else
-        result
-      end
-    end
-
-    def Digit.attempt_translation(digit)
-      ERR_TRANSLATIONS[digit] || [digit]
-    end
-
-    def to_s
-      String.new(@digit)
-    end
 
   end
 end

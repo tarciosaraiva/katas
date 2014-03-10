@@ -5,6 +5,8 @@ require "katabank/checksum"
 
 module Katabank
 
+  ILL_DIGIT = "?"
+  ACC_NUM_LEN = 9
   BLOCK_CONSTRAINT = 3
   ENTRY_COLUMN_CONSTRAINT = 28
 
@@ -16,6 +18,8 @@ module Katabank
       split_lines
       parse_digits
     end
+
+    private
 
     def split_lines (line_num = 0)
       if line_num < @raw_content.size
@@ -33,7 +37,7 @@ module Katabank
           account_number = Digit.new(flatten_digit).to_s
           account_number.concat parse_digits(row, end_range + 1..end_range + 3)
 
-          if (account_number.length == Account::ACC_NUM_LEN)
+          if (account_number.length == ACC_NUM_LEN)
             @accounts.push Account.new(account_number)
             parse_digits(row + 4)
           end
