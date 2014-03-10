@@ -1,6 +1,7 @@
 require "katabank/version"
 require "katabank/account"
 require "katabank/digit"
+require "katabank/checksum"
 
 module Katabank
 
