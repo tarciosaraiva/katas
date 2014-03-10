@@ -1,37 +1,53 @@
 module Katabank
   class Account
 
-    def initialize(acc_number)
-      @account_number = acc_number
+    def initialize(account_number)
+      @account_number = account_number
       @possibilities  = []
-      @ill            = acc_number.count(ILL_DIGIT) > 0
+      @status         = CHECKSUM.validate(account_number)
 
-      if !@ill
-        recheck_account_number(acc_number) unless CHECKSUM.is_valid(acc_number)
-        @account_number = @possibilities[0] unless @possibilities.size != 1
+      if @status == 'OK' || @status == 'NOK'
+        recheck_account_number(account_number)
+        case @possibilities.size
+        when 1
+          @account_number = @possibilities[0]
+        when 0
+          # nothing to do here
+        else
+          @status = 'AMB'
+        end
       end
 
-      puts to_s
+      puts self
     end
 
     def to_s
-      "#{@account_number} #{'AMB ' + @possibilities.to_s unless @possibilities.size < 2}#{'ILL' unless !@ill}"
+      str = "#{@account_number} "
+      case @status
+      when 'AMB'
+        str += @possibilities.to_s
+      when 'ILL'
+        str += @status
+      end
+      str.strip
     end
 
     private
 
-    def recheck_account_number(acc_number, position = 0)
-      digit_to_fix = acc_number[position]
+    def recheck_account_number(account_number, position = 0)
+      digit_to_fix = account_number[position]
       sugg_digits = [].replace Digit.attempt_translation(digit_to_fix)
 
       while !sugg_digits.empty?
-        acc_number[position] = sugg_digits.pop
-        @possibilities.push String.new(acc_number) unless !CHECKSUM.is_valid(acc_number)
+        account_number[position] = sugg_digits.pop
+        if CHECKSUM.validate(account_number) == 'OK'
+          @possibilities.push String.new(account_number)
+        end
       end
 
-      acc_number[position] = digit_to_fix
+      account_number[position] = digit_to_fix
       position += 1
-      recheck_account_number(acc_number, position) unless position >= ACC_NUM_LEN
+      recheck_account_number(account_number, position) unless position >= ACC_NUM_LEN
     end
 
   end
